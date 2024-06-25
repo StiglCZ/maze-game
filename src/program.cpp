@@ -142,7 +142,8 @@ int main() {
 
         // Winning
         if((maze.p.y == 5 && maze.p.x == W - 2) || (maze.p.y == 4 && maze.p.x == W - 1) || (maze.p.y == 6 && maze.p.x == W - 1)) {
-            maze = mazeGen(timer); 
+            maze = mazeGen(timer);
+            EndDrawing();
             continue;
         }
         
@@ -185,7 +186,7 @@ int main() {
             
             // Go back
             if(IsKeyPressed(KEY_B)){
-                if(maze.history.empty())continue;
+                if(maze.history.empty()) continue;
                 field[conv(maze.p)] = 0;
                 maze.p = maze.history.top();
                 maze.history.pop();
