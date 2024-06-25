@@ -63,7 +63,7 @@ COMPARISONS compare(std::string file1, std::string file2) {
 
 void rebuildMaker(std::string file) {
     TEMP_QUIET(true);
-    runCmd("g++", {file, "-onewmaker"});
+    runCmd("clang++", {file, "-onewmaker"});
     switch(compare("maker", "newmaker")) {
         case DIFFERENT:
             std::cout << "-- change detected --" << std::endl;
