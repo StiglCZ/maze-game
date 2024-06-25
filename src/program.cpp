@@ -11,7 +11,32 @@
 const int W = 30, H = 30, Sc = 20;
 #define rect(x, y, c) DrawRectangle(x * Sc, y * Sc, Sc, Sc, c);
 #define conv(p) (p.x + p.y * W)
-struct Point{int x; int y; };
+struct Point {
+  int x;
+  int y;
+};
+// Settings
+ 
+// Colors
+const Color
+    WALLS      = GREEN,
+    BACKGROUND = BLUE,
+    PLAYER     = RED,
+    FINISH     = YELLOW,
+    INVALID    = BLACK,
+    GRID       = WHITE
+    ;
+
+const int
+    NORMAL_UP   = KEY_W,
+    NORMAL_DOWN = KEY_S,
+    NORMAL_LEFT = KEY_A,
+    NORMAL_RIGHT= KEY_D,
+
+    DIRECT_UP   = KEY_UP,
+    DIRECT_DOWN = KEY_DOWN,
+    DIRECT_LEFT = KEY_LEFT,
+    DIRECT_RIGHT= KEY_RIGHT;
 
 u_char field[W * H];
 char isPossible(Point p) {
@@ -102,18 +127,18 @@ int main() {
         for(int i =0; i < W * H; i++){
             Color c;
             switch(field[i]){
-                case 0: c = BLUE;   break;
-                case 1: c = GREEN;  break;
-                case 2: c = RED;    break;
-                case 3: c = YELLOW; break;
-                default: c = BLACK;
+                case 0: c = BACKGROUND; break;
+                case 1: c = WALLS;  break;
+                case 2: c = PLAYER; break;
+                case 3: c = FINISH; break;
+                default: c = INVALID;
             }
             
             rect(i % W, std::floor(i / (float)W), c);
         }
         // Grid
-        for(int i =0; i < W; i++) DrawLine(i * Sc, 0 * Sc, i * Sc, H * Sc, WHITE);
-        for(int i =0; i < H; i++) DrawLine(0 * Sc, i * Sc, W * Sc, i * Sc, WHITE);
+        for(int i =0; i < W; i++) DrawLine(i * Sc, 0 * Sc, i * Sc, H * Sc, GRID);
+        for(int i =0; i < H; i++) DrawLine(0 * Sc, i * Sc, W * Sc, i * Sc, GRID);
 
         // Winning
         if((maze.p.y == 5 && maze.p.x == W - 2) || (maze.p.y == 4 && maze.p.x == W - 1) || (maze.p.y == 6 && maze.p.x == W - 1)) {
@@ -124,25 +149,24 @@ int main() {
         // Timer
         timer += 0.033;
         std::string str = std::to_string((std::round(timer * 100) / 100.0f)).substr(0, 5);
-        DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, RED);
+        DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, PLAYER);
         
         EndDrawing();
         {
-            
             // Movement
             maze.history.push(maze.p);
-            if(IsKeyPressed(KEY_W) && isUsable({maze.p.x, maze.p.y -1})) maze.p.y--;
-            else if(IsKeyPressed(KEY_S) && isUsable({maze.p.x, maze.p.y +1})) maze.p.y++;
-            else if(IsKeyPressed(KEY_A) && isUsable({maze.p.x -1, maze.p.y})) maze.p.x--;
-            else if(IsKeyPressed(KEY_D) && isUsable({maze.p.x +1, maze.p.y})) maze.p.x++;
+            if(IsKeyPressed(NORMAL_UP) && isUsable({maze.p.x, maze.p.y -1})) maze.p.y--;
+            else if(IsKeyPressed(NORMAL_DOWN)  && isUsable({maze.p.x, maze.p.y +1})) maze.p.y++;
+            else if(IsKeyPressed(NORMAL_LEFT)  && isUsable({maze.p.x -1, maze.p.y})) maze.p.x--;
+            else if(IsKeyPressed(NORMAL_RIGHT) && isUsable({maze.p.x +1, maze.p.y})) maze.p.x++;
             
             // Big movement
-            else if(IsKeyPressed(KEY_UP))    while(isUsable({maze.p.x, maze.p.y -1})){ maze.history.push(maze.p); maze.p.y--; field[conv(maze.p)] = 2; }
-            else if(IsKeyPressed(KEY_DOWN))  while(isUsable({maze.p.x, maze.p.y +1})){ maze.history.push(maze.p); maze.p.y++; field[conv(maze.p)] = 2; }
-            else if(IsKeyPressed(KEY_LEFT))  while(isUsable({maze.p.x -1, maze.p.y})){ maze.history.push(maze.p); maze.p.x--; field[conv(maze.p)] = 2; }
-            else if(IsKeyPressed(KEY_RIGHT)) while(isUsable({maze.p.x +1, maze.p.y})){ maze.history.push(maze.p); maze.p.x++; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(DIRECT_UP))    while(isUsable({maze.p.x, maze.p.y -1})){ maze.history.push(maze.p); maze.p.y--; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(DIRECT_DOWN))  while(isUsable({mazep.x, maze.p.y +1})){ maze.history.push(maze.p); maze.p.y++; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(DIRECT_LEFT))  while(isUsable({maze.p.x -1, maze.p.y})){ maze.history.push(maze.p); maze.p.x--; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(DIRECT_RIGHT)) while(isUsable({maze.p.x +1, maze.p.y})){ maze.history.push(maze.p); maze.p.x++; field[conv(maze.p)] = 2; }
             else maze.history.pop();
-                
+
             // OOB prevention
             if(maze.p.x < 0 || maze.p.x >= W || maze.p.y < 0 || maze.p.y >= H){
                 maze.p = maze.history.top();
