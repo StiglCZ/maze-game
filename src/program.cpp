@@ -162,7 +162,7 @@ int main() {
             
             // Big movement
             else if(IsKeyPressed(DIRECT_UP))    while(isUsable({maze.p.x, maze.p.y -1})){ maze.history.push(maze.p); maze.p.y--; field[conv(maze.p)] = 2; }
-            else if(IsKeyPressed(DIRECT_DOWN))  while(isUsable({mazep.x, maze.p.y +1})){ maze.history.push(maze.p); maze.p.y++; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(DIRECT_DOWN))  while(isUsable({maze.p.x, maze.p.y +1})){ maze.history.push(maze.p); maze.p.y++; field[conv(maze.p)] = 2; }
             else if(IsKeyPressed(DIRECT_LEFT))  while(isUsable({maze.p.x -1, maze.p.y})){ maze.history.push(maze.p); maze.p.x--; field[conv(maze.p)] = 2; }
             else if(IsKeyPressed(DIRECT_RIGHT)) while(isUsable({maze.p.x +1, maze.p.y})){ maze.history.push(maze.p); maze.p.x++; field[conv(maze.p)] = 2; }
             else maze.history.pop();
