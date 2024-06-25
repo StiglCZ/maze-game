@@ -11,7 +11,32 @@
 const int W = 30, H = 30, Sc = 20;
 #define rect(x, y, c) DrawRectangle(x * Sc, y * Sc, Sc, Sc, c);
 #define conv(p) (p.x + p.y * W)
-struct Point{int x; int y; };
+struct Point {
+  int x;
+  int y;
+};
+// Settings
+ 
+// Colors
+const Color
+    WALLS      = GREEN,
+    BACKGROUND = BLUE,
+    PLAYER     = RED,
+    FINISH     = YELLOW,
+    INVALID    = BLACK,
+    GRID       = WHITE
+    ;
+
+const int
+    NORMAL_UP   = KEY_W,
+    NORMAL_DOWN = KEY_S,
+    NORMAL_LEFT = KEY_A,
+    NORMAL_RIGHT= KEY_D,
+
+    DIRECT_UP   = KEY_UP,
+    DIRECT_DOWN = KEY_DOWN,
+    DIRECT_LEFT = KEY_LEFT,
+    DIRECT_RIGHT= KEY_RIGHT;
 
 u_char field[W * H];
 char isPossible(Point p) {
@@ -92,18 +117,18 @@ int main() {
         for(int i =0; i < W * H; i++){
             Color c;
             switch(field[i]){
-                case 0: c = BLUE;   break;
-                case 1: c = GREEN;  break;
-                case 2: c = RED;    break;
-                case 3: c = YELLOW; break;
-                default: c = BLACK;
+                case 0: c = BACKGROUND; break;
+                case 1: c = WALLS;  break;
+                case 2: c = PLAYER; break;
+                case 3: c = FINISH; break;
+                default: c = INVALID;
             }
             
             rect(i % W, std::floor(i / (float)W), c);
         }
         // Grid
-        for(int i =0; i < W; i++) DrawLine(i * Sc, 0 * Sc, i * Sc, H * Sc, WHITE);
-        for(int i =0; i < H; i++) DrawLine(0 * Sc, i * Sc, W * Sc, i * Sc, WHITE);
+        for(int i =0; i < W; i++) DrawLine(i * Sc, 0 * Sc, i * Sc, H * Sc, GRID);
+        for(int i =0; i < H; i++) DrawLine(0 * Sc, i * Sc, W * Sc, i * Sc, GRID);
 
         // Winning
         if(p.y == 5 && p.x == W - 2)goto start;
@@ -113,23 +138,23 @@ int main() {
         // Timer
         timer += 0.033;
         std::string str = std::to_string((std::round(timer * 100) / 100.0f)).substr(0, 5);
-        DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, RED);
+        DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, PLAYER);
         
         EndDrawing();
         {
             
             // Movement
             history.push(p);
-            if(IsKeyPressed(KEY_W) && isUsable({p.x, p.y -1})) p.y--;
-            else if(IsKeyPressed(KEY_S) && isUsable({p.x, p.y +1})) p.y++;
-            else if(IsKeyPressed(KEY_A) && isUsable({p.x -1, p.y})) p.x--;
-            else if(IsKeyPressed(KEY_D) && isUsable({p.x +1, p.y})) p.x++;
+            if(IsKeyPressed(NORMAL_UP) && isUsable({p.x, p.y -1})) p.y--;
+            else if(IsKeyPressed(NORMAL_DOWN)  && isUsable({p.x, p.y +1})) p.y++;
+            else if(IsKeyPressed(NORMAL_LEFT)  && isUsable({p.x -1, p.y})) p.x--;
+            else if(IsKeyPressed(NORMAL_RIGHT) && isUsable({p.x +1, p.y})) p.x++;
             
             // Big movement
-            else if(IsKeyPressed(KEY_UP))    while(isUsable({p.x, p.y -1})){ history.push(p); p.y--; field[conv(p)] = 2; }
-            else if(IsKeyPressed(KEY_DOWN))  while(isUsable({p.x, p.y +1})){ history.push(p); p.y++; field[conv(p)] = 2; }
-            else if(IsKeyPressed(KEY_LEFT))  while(isUsable({p.x -1, p.y})){ history.push(p); p.x--; field[conv(p)] = 2; }
-            else if(IsKeyPressed(KEY_RIGHT)) while(isUsable({p.x +1, p.y})){ history.push(p); p.x++; field[conv(p)] = 2; }
+            else if(IsKeyPressed(DIRECT_UP))    while(isUsable({p.x, p.y -1})){ history.push(p); p.y--; field[conv(p)] = 2; }
+            else if(IsKeyPressed(DIRECT_DOWN))  while(isUsable({p.x, p.y +1})){ history.push(p); p.y++; field[conv(p)] = 2; }
+            else if(IsKeyPressed(DIRECT_LEFT))  while(isUsable({p.x -1, p.y})){ history.push(p); p.x--; field[conv(p)] = 2; }
+            else if(IsKeyPressed(DIRECT_RIGHT)) while(isUsable({p.x +1, p.y})){ history.push(p); p.x++; field[conv(p)] = 2; }
             else history.pop();
                 
             // OOB prevention
