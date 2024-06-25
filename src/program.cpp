@@ -8,15 +8,14 @@
 #include <cstdlib>
 #include <vector>
 
-const int W = 30, H = 30, Sc = 20;
-#define rect(x, y, c) DrawRectangle(x * Sc, y * Sc, Sc, Sc, c);
+#define rect(x, y, c) DrawRectangle(x *Sc, y *Sc, Sc, Sc, c);
 #define conv(p) (p.x + p.y * W)
+
 struct Point {
   int x;
   int y;
 };
 // Settings
- 
 // Colors
 const Color
     WALLS      = GREEN,
@@ -24,9 +23,9 @@ const Color
     PLAYER     = RED,
     FINISH     = YELLOW,
     INVALID    = BLACK,
-    GRID       = WHITE
-    ;
+    GRID       = WHITE;
 
+// Keys
 const int
     NORMAL_UP   = KEY_W,
     NORMAL_DOWN = KEY_S,
@@ -36,8 +35,18 @@ const int
     DIRECT_UP   = KEY_UP,
     DIRECT_DOWN = KEY_DOWN,
     DIRECT_LEFT = KEY_LEFT,
-    DIRECT_RIGHT= KEY_RIGHT;
+    DIRECT_RIGHT= KEY_RIGHT,
 
+    RESET = KEY_SPACE,
+    BACK = KEY_B
+    ;
+const int
+    W = 30,
+    H = 30,
+    Sc = 20,
+    step = 2
+    ;
+const Point start = {2, 0};
 u_char field[W * H];
 char isPossible(Point p) {
     if(p.x < 0 || p.y < 0) return 1;
@@ -45,6 +54,7 @@ char isPossible(Point p) {
     if(field[conv(p)] == 0)return 2;
     return 0;
 }
+
 char isUsable(Point p) {
     if(p.x < 0 || p.y < 0) return 0;
     if(p.x > W || p.y > H) return 0;
@@ -53,8 +63,8 @@ char isUsable(Point p) {
 }
 std::vector<Point> createPossible(Point p) {
     Point
-        up    = {p.x, p.y - 2}, down  = {p.x, p.y + 2},
-        left  = {p.x + 2, p.y}, right = {p.x - 2, p.y};
+        up    = {p.x, p.y - step}, down  = {p.x, p.y + step},
+        left  = {p.x + step, p.y}, right = {p.x - step, p.y};
     std::vector<Point> result;
     if(!isPossible(up))   result.push_back(up);
     if(!isPossible(down)) result.push_back(down);
@@ -71,6 +81,7 @@ void fullFill(Point p, Point q) {
 }
 
 void CreateField() {
+    srand(time(NULL));
     for(int i =0; i < W * H; i++) field[i] = 1;
     std::stack<Point> history = {};
     Point position = {0, 0};
@@ -88,6 +99,8 @@ void CreateField() {
         history.push(position);
         position = possible[rand() % possible.size()];
     }
+
+    // Finish trigger
     field[W - 1 + 5 * W] = 4;
     field[W - 2 + 5 * W] = 0;
 }
@@ -102,10 +115,8 @@ int main() {
     
     // Mazegen
     start:
-    if(timer != 0.0f) std::cout << std::to_string(timer) << "\n";
-    timer = 0;
-    srand(time(NULL));
-    Point p = {2, 0};
+    if(timer != 0.0f) std::cout << std::to_string(timer) << "\n"; timer = 0;
+    Point p = start;
     std::stack<Point> history;
     std::thread(CreateField).detach();
     
@@ -169,7 +180,7 @@ int main() {
                     field[conv(history.top())] = 0;
                     history.pop();
                 }
-                p = {2, 0};
+                p = start;
                 timer = 0;
             }
             
