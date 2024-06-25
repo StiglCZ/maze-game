@@ -67,6 +67,21 @@ void CreateField() {
     field[W - 2 + 5 * W] = 0;
 }
 
+struct mazeData {
+    Point p;
+    std::stack<Point> history;
+};
+
+mazeData mazeGen(float timer) {
+    if(timer != 0.0f) std::cout << std::to_string(timer) << "\n";
+    timer = 0;
+    srand(time(NULL));
+    Point p = {2, 0};
+    std::stack<Point> history;
+    std::thread(CreateField).detach();
+    return mazeData {p, history};
+}
+
 int main() {
     
     // Raylib init
@@ -76,13 +91,8 @@ int main() {
     float timer = 0;
     
     // Mazegen
-    start:
-    if(timer != 0.0f) std::cout << std::to_string(timer) << "\n";
-    timer = 0;
-    srand(time(NULL));
-    Point p = {2, 0};
-    std::stack<Point> history;
-    std::thread(CreateField).detach();
+    mazeData maze = mazeGen(timer);
+
     
     while(!WindowShouldClose()){
         BeginDrawing();
@@ -106,9 +116,10 @@ int main() {
         for(int i =0; i < H; i++) DrawLine(0 * Sc, i * Sc, W * Sc, i * Sc, WHITE);
 
         // Winning
-        if(p.y == 5 && p.x == W - 2)goto start;
-        else if(p.y == 4 && p.x == W - 1)goto start;
-        else if(p.y == 6 && p.x == W - 1)goto start;
+        if((maze.p.y == 5 && maze.p.x == W - 2) || (maze.p.y == 4 && maze.p.x == W - 1) || (maze.p.y == 6 && maze.p.x == W - 1)) {
+            maze = mazeGen(timer); 
+            continue;
+        }
         
         // Timer
         timer += 0.033;
@@ -119,43 +130,43 @@ int main() {
         {
             
             // Movement
-            history.push(p);
-            if(IsKeyPressed(KEY_W) && isUsable({p.x, p.y -1})) p.y--;
-            else if(IsKeyPressed(KEY_S) && isUsable({p.x, p.y +1})) p.y++;
-            else if(IsKeyPressed(KEY_A) && isUsable({p.x -1, p.y})) p.x--;
-            else if(IsKeyPressed(KEY_D) && isUsable({p.x +1, p.y})) p.x++;
+            maze.history.push(maze.p);
+            if(IsKeyPressed(KEY_W) && isUsable({maze.p.x, maze.p.y -1})) maze.p.y--;
+            else if(IsKeyPressed(KEY_S) && isUsable({maze.p.x, maze.p.y +1})) maze.p.y++;
+            else if(IsKeyPressed(KEY_A) && isUsable({maze.p.x -1, maze.p.y})) maze.p.x--;
+            else if(IsKeyPressed(KEY_D) && isUsable({maze.p.x +1, maze.p.y})) maze.p.x++;
             
             // Big movement
-            else if(IsKeyPressed(KEY_UP))    while(isUsable({p.x, p.y -1})){ history.push(p); p.y--; field[conv(p)] = 2; }
-            else if(IsKeyPressed(KEY_DOWN))  while(isUsable({p.x, p.y +1})){ history.push(p); p.y++; field[conv(p)] = 2; }
-            else if(IsKeyPressed(KEY_LEFT))  while(isUsable({p.x -1, p.y})){ history.push(p); p.x--; field[conv(p)] = 2; }
-            else if(IsKeyPressed(KEY_RIGHT)) while(isUsable({p.x +1, p.y})){ history.push(p); p.x++; field[conv(p)] = 2; }
-            else history.pop();
+            else if(IsKeyPressed(KEY_UP))    while(isUsable({maze.p.x, maze.p.y -1})){ maze.history.push(maze.p); maze.p.y--; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(KEY_DOWN))  while(isUsable({maze.p.x, maze.p.y +1})){ maze.history.push(maze.p); maze.p.y++; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(KEY_LEFT))  while(isUsable({maze.p.x -1, maze.p.y})){ maze.history.push(maze.p); maze.p.x--; field[conv(maze.p)] = 2; }
+            else if(IsKeyPressed(KEY_RIGHT)) while(isUsable({maze.p.x +1, maze.p.y})){ maze.history.push(maze.p); maze.p.x++; field[conv(maze.p)] = 2; }
+            else maze.history.pop();
                 
             // OOB prevention
-            if(p.x < 0 || p.x >= W || p.y < 0 || p.y >= H){
-                p = history.top();
-                history.pop();
+            if(maze.p.x < 0 || maze.p.x >= W || maze.p.y < 0 || maze.p.y >= H){
+                maze.p = maze.history.top();
+                maze.history.pop();
                 
             // Reset
             } else if(IsKeyPressed(KEY_SPACE)){
-                field[conv(p)] = 0;
-                while(!history.empty()){
-                    field[conv(history.top())] = 0;
-                    history.pop();
+                field[conv(maze.p)] = 0;
+                while(!maze.history.empty()){
+                    field[conv(maze.history.top())] = 0;
+                    maze.history.pop();
                 }
-                p = {2, 0};
+                maze.p = {2, 0};
                 timer = 0;
             }
             
             // Go back
             if(IsKeyPressed(KEY_B)){
-                if(history.empty())continue;
-                field[conv(p)] = 0;
-                p = history.top();
-                history.pop();
+                if(maze.history.empty())continue;
+                field[conv(maze.p)] = 0;
+                maze.p = maze.history.top();
+                maze.history.pop();
             }
-            field[conv(p)] = 2;
+            field[conv(maze.p)] = 2;
         }
     }
 }
