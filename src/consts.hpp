@@ -2,11 +2,12 @@
 #define __CONSTS_HPP
 
 #include <raylib.h>
+
 #define conv(p) (p.x + p.y * W)
 
 const int W = 30, H = 30, Sc = 20, step = 2;
 const Point start = {2, 0};
-typedef u_char t_field;
+typedef unsigned char t_field;
 
 const int
     NORMAL_UP   = KEY_W,

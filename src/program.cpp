@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <raylib.h>
 #include <cstdlib>
-#include <vector>
 
 #include "structs.hpp"
 #include "consts.hpp"
