@@ -4,16 +4,9 @@
 #include <raylib.h>
 #define conv(p) (p.x + p.y * W)
 
-const int W = 30, H = 30, Sc = 20;
+const int W = 30, H = 30, Sc = 20, step = 2;
+const Point start = {2, 0};
 typedef u_char t_field;
-
-const Color
-    WALLS      = GREEN,
-    BACKGROUND = BLUE,
-    PLAYER     = RED,
-    FINISH     = YELLOW,
-    INVALID    = BLACK,
-    GRID       = WHITE;
 
 const int
     NORMAL_UP   = KEY_W,
@@ -24,6 +17,17 @@ const int
     DIRECT_UP   = KEY_UP,
     DIRECT_DOWN = KEY_DOWN,
     DIRECT_LEFT = KEY_LEFT,
-    DIRECT_RIGHT= KEY_RIGHT;
+    DIRECT_RIGHT= KEY_RIGHT,
+
+    RESET = KEY_SPACE,
+    BACK = KEY_B;
+
+const Color
+    WALLS      = GREEN,
+    BACKGROUND = BLUE,
+    PLAYER     = RED,
+    FINISH     = YELLOW,
+    INVALID    = BLACK,
+    GRID       = WHITE;
 
 #endif

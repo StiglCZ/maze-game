@@ -18,7 +18,7 @@ t_field field[W * H];
 
 mazeData mazeGen() {
     srand(time(NULL));
-    Point p = {2, 0};
+    Point p = start;
     std::stack<Point> history;
     std::thread(CreateField, field).detach();
     return mazeData {p, history, 0.0};
@@ -34,7 +34,6 @@ int main() {
     // Mazegen
     mazeData maze = mazeGen();
 
-    
     while(!WindowShouldClose()){
         BeginDrawing();
         ClearBackground({255, 255, 255, 255});

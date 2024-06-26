@@ -28,7 +28,7 @@ void resetPlayer(mazeData &maze, t_field *field) {
         field[conv(maze.history.top())] = 0;
         maze.history.pop();
     }
-    maze.p = {2, 0};
+    maze.p = start;
     maze.timer = 0;
 }
 
