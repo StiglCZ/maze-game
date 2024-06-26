@@ -22,6 +22,7 @@ mazeData mazeGen() {
     std::stack<Point> history;
     std::thread(CreateField, field).detach();
     return mazeData {p, history, 0.0};
+}
 
 int main() {
     
