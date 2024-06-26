@@ -67,22 +67,24 @@ int main() {
             REGISTER_BIGMOVE(DIRECT_DOWN, +0, +1);
             REGISTER_BIGMOVE(DIRECT_LEFT, -1, +0);
             REGISTER_BIGMOVE(DIRECT_RIGHT, +1, +0);
-
-            if (maze.p.x != op.x || maze.p.y != op.y) { // History
+            
+            // History
+            if (maze.p.x != op.x || maze.p.y != op.y)
                 maze.history.push(maze.p);
-            }
-
-            if(maze.p.x < 0 || maze.p.x >= W || maze.p.y < 0 || maze.p.y >= H) { // No out of bounds!
+            
+            // No out of bounds!
+            if(maze.p.x < 0 || maze.p.x >= W || maze.p.y < 0 || maze.p.y >= H) {
                 maze.p = maze.history.top();
                 maze.history.pop();
             }
-
-            if(IsKeyPressed(KEY_SPACE)) { // Reset
+            // Reset
+            if(IsKeyPressed(KEY_SPACE))
                 resetPlayer(maze, field);
-            }
-            if(IsKeyPressed(KEY_B)) { // Go back
+
+            // Go back
+            if(IsKeyPressed(KEY_B))
                 backTrack(maze, field);
-            }
+
             field[conv(maze.p)] = 2;
         }
     }
