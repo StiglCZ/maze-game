@@ -2,6 +2,7 @@
 #define __CONSTS_HPP
 
 #include <raylib.h>
+#include "structs.hpp"
 
 #define conv(p) (p.x + p.y * W)
 

@@ -8,10 +8,10 @@
 #include <time.h>
 
 char isPossible(Point p, t_field *field) {
-    if(p.x < 0 || p.y < 0) return 1;
-    if(p.x > W || p.y > H) return 1;
-    if(field[conv(p)] == 0)return 2;
-    return 0;
+    if(p.x < 0 || p.y < 0) return 0;
+    if(p.x > W || p.y > H) return 0;
+    if(field[conv(p)] == 0)return 0;
+    return 1;
 }
 char isUsable(Point p, t_field *field) {
     if(p.x < 0 || p.y < 0) return 0;
@@ -24,10 +24,10 @@ std::vector<Point> createPossible(Point p, t_field *field) {
         up    = {p.x, p.y - step}, down  = {p.x, p.y + step},
         left  = {p.x + step, p.y}, right = {p.x - step, p.y};
     std::vector<Point> result;
-    if(!isPossible(up, field))   result.push_back(up);
-    if(!isPossible(down, field)) result.push_back(down);
-    if(!isPossible(left, field)) result.push_back(left);
-    if(!isPossible(right, field))result.push_back(right);
+    if(isPossible(up, field))   result.push_back(up);
+    if(isPossible(down, field)) result.push_back(down);
+    if(isPossible(left, field)) result.push_back(left);
+    if(isPossible(right, field))result.push_back(right);
     return result;
 }
 void fullFill(Point p, Point q, t_field *field) {
@@ -35,7 +35,7 @@ void fullFill(Point p, Point q, t_field *field) {
     else if(p.x > q.x) p.x--;
     else if(p.y < q.y) p.y++;
     else if(p.y > q.y) p.y--;
-    if(!isPossible(p, field)) field[conv(p)] = 0;
+    if(isPossible(p, field)) field[conv(p)] = 0;
 }
 
 void CreateField(t_field *field) {

@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include "consts.hpp"
-#include "structs.hpp"
 
 #define rect(x, y, c) DrawRectangle(x * Sc, y * Sc, Sc, Sc, c);
 
