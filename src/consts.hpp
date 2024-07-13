@@ -6,7 +6,7 @@
 
 #define conv(p) (p.x + p.y * W)
 
-const int W = 30, H = 30, Sc = 20, step = 2;
+const int W = 29, H = 29, Sc = 20, step = 2;
 const Point start = {2, 0};
 typedef unsigned char t_field;
 
