@@ -28,7 +28,7 @@ int main() {
     // Raylib init
     SetTraceLogLevel(TraceLogLevel::LOG_NONE);
     InitWindow(W * Sc, H * Sc, "Maze");
-    SetTargetFPS(30);
+    SetTargetFPS(60);
 
     // Mazegen
     mazeData maze = mazeGen();

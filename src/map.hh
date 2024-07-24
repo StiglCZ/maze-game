@@ -45,9 +45,9 @@ void CreateField(t_field *field) {
 
     // Finish trigger
     field[W - 1 + 5 * W] = 4;
-    field[W - 2 + 5 * W] = 0;
+    
     std::stack<Point> history = {};
-    Point pos = {0, 0};
+    Point pos = {2, 0};
     while(1){
         field[conv(pos)] = 0;
         if(!history.empty())
@@ -61,9 +61,8 @@ void CreateField(t_field *field) {
         }
         history.push(pos);
         pos = possible[rand() % possible.size()];
-        usleep(10000);
+        usleep(5000);
     }
-    field[1] = 0;
 }
 
 #endif
