@@ -73,10 +73,8 @@ int main() {
                 maze.history.push(maze.p);
             
             // No out of bounds!
-            if(maze.p.x < 0 || maze.p.x >= W || maze.p.y < 0 || maze.p.y >= H) {
-                maze.p = maze.history.top();
-                maze.history.pop();
-            }
+            if(!maze.p.Inside({W, H}))
+                backTrack(maze, field);
 
             // Reset player
             if(IsKeyPressed(RESET))
