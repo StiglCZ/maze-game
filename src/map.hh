@@ -49,7 +49,7 @@ void CreateField(t_field *field) {
     std::stack<Point> history = {};
     Point pos = {2, 0};
     while(1){
-        field[conv(pos)] = 0;
+        if(field[conv(pos)] != 2)field[conv(pos)] = 0;
         if(!history.empty())
             fullFill(history.top(), pos, field);
         std::vector<Point> possible = createPossible(pos, field);
