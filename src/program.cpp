@@ -39,8 +39,6 @@ int main() {
         
         // Draw the tiles
         drawMaze(field);
-        // Grid
-        drawGrid();
         
         // Timer
         maze.timer += GetFrameTime();
