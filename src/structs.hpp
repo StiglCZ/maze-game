@@ -4,8 +4,11 @@
 #include <stack>
 
 struct Point {
-  int x;
-  int y;
+    int x;
+    int y;
+    friend bool operator==(Point a, Point b){
+        return a.x == b.x && a.y == b.y;
+    }
 };
 
 struct mazeData {

@@ -17,6 +17,7 @@
 
 void backTrack(mazeData &maze, t_field *field) {
     if(maze.history.empty()) return;
+    while(maze.history.top() == maze.p) maze.history.pop();
     field[conv(maze.p)] = 0;
     maze.p = maze.history.top();
     maze.history.pop();
