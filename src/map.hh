@@ -5,6 +5,7 @@
 #include "consts.hpp"
 #include <vector>
 #include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
 
 char isPossible(Point p, t_field *field) {
@@ -14,8 +15,8 @@ char isPossible(Point p, t_field *field) {
     return 1;
 }
 char isUsable(Point p, t_field *field) {
-    if(p.x < 0 || p.y < 0) return 0;
-    if(p.x > W || p.y > H) return 0;
+    if(p.x <  0 || p.y <  0) return 0;
+    if(p.x >= W || p.y >= H) return 0;
     if(field[conv(p)] != 0)return 0;
     return 1;
 }
@@ -60,6 +61,7 @@ void CreateField(t_field *field) {
         }
         history.push(pos);
         pos = possible[rand() % possible.size()];
+        usleep(10000);
     }
 }
 
