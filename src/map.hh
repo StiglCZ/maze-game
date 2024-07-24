@@ -9,14 +9,12 @@
 #include <time.h>
 
 char isPossible(Point p, t_field *field) {
-    if(p.x < 0 || p.y < 0) return 0;
-    if(p.x > W || p.y > H) return 0;
+    if(!p.Inside({W, H}))  return 0;
     if(field[conv(p)] != 1)return 0;
     return 1;
 }
 char isUsable(Point p, t_field *field) {
-    if(p.x <  0 || p.y <  0) return 0;
-    if(p.x >= W || p.y >= H) return 0;
+    if(!p.Inside({W, H}))  return 0;
     if(field[conv(p)] != 0)return 0;
     return 1;
 }
@@ -42,12 +40,9 @@ void fullFill(Point p, Point q, t_field *field) {
 void CreateField(t_field *field) {
     srand(time(NULL));
     for(int i =0; i < W * H; i++) field[i] = 1;
-
-    // Finish trigger
-    field[W - 1 + 5 * W] = 4;
-    
     std::stack<Point> history = {};
-    Point pos = {2, 0};
+    Point pos = start;
+
     while(1){
         if(field[conv(pos)] != 2)field[conv(pos)] = 0;
         if(!history.empty())
@@ -63,6 +58,9 @@ void CreateField(t_field *field) {
         pos = possible[rand() % possible.size()];
         usleep(5000);
     }
+
+    // Finish trigger
+    field[conv(finish)] = 4;
 }
 
 #endif

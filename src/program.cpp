@@ -51,7 +51,7 @@ int main() {
         {   // Movement
             
             // Winning
-            if(maze.p.Distance({W - 1, 5}) < 2) {
+            if(maze.p.Distance(finish) < 2) {
                 std::cout << std::to_string(maze.timer) << "\n";
                 maze = mazeGen();
                 continue;
