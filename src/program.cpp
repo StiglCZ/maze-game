@@ -34,21 +34,24 @@ int main() {
     mazeData maze = mazeGen();
 
     while(!WindowShouldClose()){
-        BeginDrawing();
-        ClearBackground({255, 255, 255, 255});
+        {   // Drawing
+            BeginDrawing();
+            ClearBackground({255, 255, 255, 255});
         
-        // Draw the tiles
-        drawMaze(field);
+            // Draw the tiles
+            drawMaze(field);
         
-        // Timer
-        maze.timer += GetFrameTime();
-        std::string str = std::to_string((std::round(maze.timer * 100) / 100.0f)).substr(0, 5);
-        DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, PLAYER);
+            // Timer
+            maze.timer += GetFrameTime();
+            std::string str = std::to_string((std::round(maze.timer * 100) / 100.0f)).substr(0, 5);
+            DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, PLAYER);
         
-        EndDrawing();
-        {
+            EndDrawing();
+        }
+        {   // Movement
+            
             // Winning
-            if((maze.p.y == 5 && maze.p.x == W - 2) || (maze.p.y == 4 && maze.p.x == W - 1) || (maze.p.y == 6 && maze.p.x == W - 1)) {
+            if(maze.p.Distance({W - 1, 5}) < 2) {
                 std::cout << std::to_string(maze.timer) << "\n";
                 maze = mazeGen();
                 continue;
@@ -66,7 +69,7 @@ int main() {
             REGISTER_BIGMOVE(DIRECT_RIGHT, +1, +0);
             
             // History
-            if (maze.p.x != op.x || maze.p.y != op.y)
+            if (maze.p != op)
                 maze.history.push(maze.p);
             
             // No out of bounds!
