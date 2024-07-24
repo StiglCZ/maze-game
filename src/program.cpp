@@ -74,13 +74,21 @@ int main() {
                 maze.p = maze.history.top();
                 maze.history.pop();
             }
-            // Reset
-            if(IsKeyPressed(KEY_SPACE))
+
+            // Reset player
+            if(IsKeyPressed(RESET))
                 resetPlayer(maze, field);
 
             // Go back
-            if(IsKeyPressed(KEY_B))
+            if(IsKeyPressed(BACK))
                 backTrack(maze, field);
+
+            // Change map
+            if(IsKeyPressed(CHANGE_MAP) && maze.timer > 1.7f) {
+                std::cout << "Skipped\n";
+                maze = mazeGen();
+                continue;
+            }
 
             field[conv(maze.p)] = 2;
         }

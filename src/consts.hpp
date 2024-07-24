@@ -21,8 +21,10 @@ const int
     DIRECT_LEFT = KEY_LEFT,
     DIRECT_RIGHT= KEY_RIGHT,
 
+    CHANGE_MAP  = KEY_Q,
+
     RESET = KEY_SPACE,
-    BACK = KEY_B;
+    BACK  = KEY_B;
 
 const Color
     WALLS      = GREEN,
