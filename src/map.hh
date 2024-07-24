@@ -63,6 +63,7 @@ void CreateField(t_field *field) {
         pos = possible[rand() % possible.size()];
         usleep(10000);
     }
+    field[1] = 0;
 }
 
 #endif
