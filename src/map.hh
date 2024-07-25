@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
-
+#include <iostream>
 char isPossible(Point p, t_field *field) {
     if(!p.Inside({W, H}))  return 0;
     if(field[conv(p)] != 1)return 0;
@@ -39,14 +39,15 @@ void fullFill(Point p, Point q, t_field *field) {
 
 void CreateField(t_field *field) {
     srand(time(NULL));
+    std::cout << time(NULL) << " - ";
     for(int i =0; i < W * H; i++) field[i] = 1;
     std::stack<Point> history = {};
     Point pos = start;
 
     while(1){
-        if(field[conv(pos)] != 2)field[conv(pos)] = 0;
-        if(!history.empty())
-            fullFill(history.top(), pos, field);
+        if(field[conv(pos)] != 2) field[conv(pos)] = 0;
+        if(!history.empty()) fullFill(history.top(), pos, field);
+        usleep(5000);
         std::vector<Point> possible = createPossible(pos, field);
         if(possible.empty()) {
             if(history.empty()) break;
@@ -56,7 +57,6 @@ void CreateField(t_field *field) {
         }
         history.push(pos);
         pos = possible[rand() % possible.size()];
-        usleep(5000);
     }
 
     // Finish trigger

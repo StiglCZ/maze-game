@@ -37,61 +37,63 @@ int main() {
         {   // Drawing
             BeginDrawing();
             ClearBackground({255, 255, 255, 255});
-        
+
             // Draw the tiles
             drawMaze(field);
-        
+
             // Timer
-            maze.timer += GetFrameTime();
-            std::string str = std::to_string((std::round(maze.timer * 100) / 100.0f)).substr(0, 5);
-            DrawText(str.c_str(), W * Sc- 120, H * Sc -20, 20, PLAYER);
+            if(maze.p != start)
+                maze.timer += GetFrameTime();
+            else maze.timer = 0.0f;
+            
+            std::string str = std::to_string(maze.timer).substr(0, 5);
+            DrawText(str.c_str(), W * Sc - 50, 0, 20, WHITE);
         
             EndDrawing();
         }
-        {   // Movement
-            
-            // Winning
-            if(maze.p.Distance(finish) < 2) {
-                std::cout << std::to_string(maze.timer) << "\n";
-                maze = mazeGen();
-                continue;
-            }
-
+        {
             // Movement
-            Point op = maze.p;
+            Point previous = maze.p;
             REGISTER_MOVE(NORMAL_UP, +0, -1);
             REGISTER_MOVE(NORMAL_DOWN, +0, +1);
             REGISTER_MOVE(NORMAL_LEFT, -1, +0);
             REGISTER_MOVE(NORMAL_RIGHT, +1, +0);
-            REGISTER_BIGMOVE(DIRECT_UP, +0, -1);
-            REGISTER_BIGMOVE(DIRECT_DOWN, +0, +1);
-            REGISTER_BIGMOVE(DIRECT_LEFT, -1, +0);
-            REGISTER_BIGMOVE(DIRECT_RIGHT, +1, +0);
-            
+
             // History
-            if (maze.p != op)
-                maze.history.push(maze.p);
+            if(maze.p != previous)
+                maze.history.push(previous);
             
             // No out of bounds!
             if(!maze.p.Inside({W, H}))
                 backTrack(maze, field);
 
-            // Reset player
-            if(IsKeyPressed(RESET))
-                resetPlayer(maze, field);
-
-            // Go back
-            if(IsKeyPressed(BACK))
-                backTrack(maze, field);
-
-            // Change map
-            if(IsKeyPressed(CHANGE_MAP) && maze.timer > 1.7f) {
-                std::cout << "Skipped\n";
-                maze = mazeGen();
-                continue;
-            }
-
-            field[conv(maze.p)] = 2;
+            REGISTER_BIGMOVE(DIRECT_UP, +0, -1);
+            REGISTER_BIGMOVE(DIRECT_DOWN, +0, +1);
+            REGISTER_BIGMOVE(DIRECT_LEFT, -1, +0);
+            REGISTER_BIGMOVE(DIRECT_RIGHT, +1, +0);
         }
+        // Reset player
+        if(IsKeyPressed(RESET))
+            resetPlayer(maze, field);
+
+        // Go back
+        if(IsKeyPressed(BACK))
+            backTrack(maze, field);
+
+        // Change map
+        if(IsKeyPressed(CHANGE_MAP) && field[conv(finish)] == 4) {
+            std::cout << "Skipped\n";
+            maze = mazeGen();
+            continue;
+        }
+
+        // Winning
+        if(maze.p.Distance(finish) < 2) {
+            std::cout << std::to_string(maze.timer) << std::endl;
+            maze = mazeGen();
+            continue;
+        }
+
+        field[conv(maze.p)] = 2;
     }
 }
