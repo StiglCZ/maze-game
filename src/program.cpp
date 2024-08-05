@@ -51,8 +51,7 @@ int main() {
         
             EndDrawing();
         }
-        {
-            // Movement
+        {   // Movement
             Point previous = maze.p;
             REGISTER_MOVE(NORMAL_UP, +0, -1);
             REGISTER_MOVE(NORMAL_DOWN, +0, +1);
@@ -64,7 +63,7 @@ int main() {
                 maze.history.push(previous);
             
             // No out of bounds!
-            if(!maze.p.Inside({W, H}))
+            if(!inBounds(maze.p,{W, H}))
                 backTrack(maze, field);
 
             REGISTER_BIGMOVE(DIRECT_UP, +0, -1);
@@ -72,21 +71,23 @@ int main() {
             REGISTER_BIGMOVE(DIRECT_LEFT, -1, +0);
             REGISTER_BIGMOVE(DIRECT_RIGHT, +1, +0);
         }
-        // Reset player
-        if(IsKeyPressed(RESET))
-            resetPlayer(maze, field);
+        {   // Keyboard inputs
 
-        // Go back
-        if(IsKeyPressed(BACK))
-            backTrack(maze, field);
+            // Reset player
+            if(IsKeyPressed(RESET))
+                resetPlayer(maze, field);
 
-        // Change map
-        if(IsKeyPressed(CHANGE_MAP) && field[conv(finish)] == 4) {
-            std::cout << "Skipped\n";
-            maze = mazeGen();
-            continue;
+            // Go back
+            if(IsKeyPressed(BACK))
+                backTrack(maze, field);
+
+            // Change map
+            if(IsKeyPressed(CHANGE_MAP) && field[conv(finish)] == 4) {
+                std::cout << "Skipped\n";
+                maze = mazeGen();
+                continue;
+            }
         }
-
         // Winning
         if(maze.p.Distance(finish) < 2) {
             std::cout << std::to_string(maze.timer) << std::endl;

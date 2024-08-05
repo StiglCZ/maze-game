@@ -15,7 +15,7 @@ const int
     delay = 5000;
 
 const Point
-    start = {2, 0},
+    start  = {2, 0},
     finish = {W - 1, H - 1};
 
 const int

@@ -9,8 +9,7 @@ struct Point {
     int x, y;
     friend bool operator==(Point a, Point b){ return a.x == b.x && a.y == b.y; }
     friend bool operator!=(Point a, Point b){ return !(a==b); }
-    int  Distance(Point b){ return std::abs(x - b.x) + std::abs(y - b.y); }
-    bool Inside(Point p)  { return (x < p.x && y < p.y && x > -1 && y > -1); }
+    int Distance(Point b){ return std::abs(x - b.x) + std::abs(y - b.y); }
 };
 
 struct mazeData {

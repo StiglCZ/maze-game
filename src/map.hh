@@ -8,13 +8,16 @@
 #include <unistd.h>
 #include <time.h>
 #include <iostream>
+bool inBounds(Point p, Point max) {
+    return (p.x < max.x && p.y < max.y && p.x > -1 && p.y > -1);
+}
 char isPossible(Point p, t_field *field) {
-    if(!p.Inside({W, H}))  return 0;
+    if(!inBounds(p, {W, H}))  return 0;
     if(field[conv(p)] != 1)return 0;
     return 1;
 }
 char isUsable(Point p, t_field *field) {
-    if(!p.Inside({W, H}))  return 0;
+    if(!inBounds(p, {W, H}))  return 0;
     if(field[conv(p)] != 0)return 0;
     return 1;
 }
