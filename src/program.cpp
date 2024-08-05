@@ -47,7 +47,7 @@ int main() {
             else maze.timer = 0.0f;
             
             std::string str = std::to_string(maze.timer).substr(0, 5);
-            DrawText(str.c_str(), W * Sc - 50, 0, 20, WHITE);
+            DrawText(str.c_str(), W * Sc - 50, 0, 20, TIME);
         
             EndDrawing();
         }
@@ -96,4 +96,5 @@ int main() {
 
         field[conv(maze.p)] = 2;
     }
+    std::cout << "Exited\n";
 }

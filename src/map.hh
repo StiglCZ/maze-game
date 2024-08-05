@@ -47,7 +47,6 @@ void CreateField(t_field *field) {
     while(1){
         if(field[conv(pos)] != 2) field[conv(pos)] = 0;
         if(!history.empty()) fullFill(history.top(), pos, field);
-        usleep(5000);
         std::vector<Point> possible = createPossible(pos, field);
         if(possible.empty()) {
             if(history.empty()) break;
@@ -55,6 +54,7 @@ void CreateField(t_field *field) {
             history.pop();
             continue;
         }
+        usleep(delay);
         history.push(pos);
         pos = possible[rand() % possible.size()];
     }

@@ -5,10 +5,18 @@
 #include "structs.hpp"
 
 #define conv(p) (p.x + p.y * W)
-
-const int W = 35, H = 35, Sc = 20, step = 2;
-const Point start = {2, 0}, finish = {W - 1, H - 1};
 typedef unsigned char t_field;
+
+const int
+    W     = 35,
+    H     = 35,
+    Sc    = 20,
+    step  = 2,
+    delay = 5000;
+
+const Point
+    start = {2, 0},
+    finish = {W - 1, H - 1};
 
 const int
     NORMAL_UP   = KEY_W,
@@ -32,6 +40,6 @@ const Color
     PLAYER     = RED,
     FINISH     = YELLOW,
     INVALID    = BLACK,
-    GRID       = WHITE;
+    TIME       = WHITE;
 
 #endif
