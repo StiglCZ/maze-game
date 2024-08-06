@@ -3,6 +3,7 @@
 
 #include "structs.hpp"
 #include "consts.hpp"
+#include <cstdlib>
 #include <vector>
 #include <stdlib.h>
 #include <unistd.h>
@@ -13,9 +14,10 @@ bool inBounds(Point p, Point max) {
 }
 char isPossible(Point p, t_field *field) {
     if(!inBounds(p, {W, H}))  return 0;
-    if(field[conv(p)] != 1)return 0;
+    if(field[conv(p)] != 1)   return 0;
     return 1;
 }
+
 char isUsable(Point p, t_field *field) {
     if(!inBounds(p, {W, H}))  return 0;
     if(field[conv(p)] != 0)return 0;
@@ -48,8 +50,6 @@ void CreateField(t_field *field) {
     Point pos = start;
 
     while(1){
-        if(field[conv(pos)] != 2) field[conv(pos)] = 0;
-        if(!history.empty()) fullFill(history.top(), pos, field);
         std::vector<Point> possible = createPossible(pos, field);
         if(possible.empty()) {
             if(history.empty()) break;
@@ -60,8 +60,16 @@ void CreateField(t_field *field) {
         usleep(delay);
         history.push(pos);
         pos = possible[rand() % possible.size()];
+        if(field[conv(pos)] != 2) field[conv(pos)] = 0;
+        if(!history.empty()) fullFill(history.top(), pos, field);
     }
-
+    // Enhance the maze (for perfect maze delete this)
+    for(int i =0; i < 20; i++){
+        Point p;
+        do{ p = {(rand() % (W / 2)) * 2 + 1, (rand() % (H / 2)) * 2};
+        }while(field[conv(p)] == 0);
+        field[conv(p)] = 0;
+    }
     // Finish trigger
     field[conv(finish)] = 4;
 }
