@@ -60,8 +60,8 @@ void CreateField(t_field *field) {
         usleep(delay);
         history.push(pos);
         pos = possible[rand() % possible.size()];
+        fullFill(history.top(), pos, field);
         if(field[conv(pos)] != 2) field[conv(pos)] = 0;
-        if(!history.empty()) fullFill(history.top(), pos, field);
     }
     // Enhance the maze (for perfect maze delete this)
     for(int i =0; i < 20; i++){
